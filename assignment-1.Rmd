@@ -27,6 +27,8 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r, include = T}
 # LOAD THE PACKAGES YOU ARE USING IN THIS CODE CHUNK
 # library(nameofpackage)
+library(tidyverse)
+
 ```
 
 
@@ -49,7 +51,13 @@ You can use the data set directly by importing the csv file in the repository.
 a) How many unique astronauts are stored in the data set?
 
 ```{r}
-# YOUR CODE HERE
+# Answer for #a is 564 unique astronauts. Code used is astronauts <- read.csv("astronauts.csv") 
+# then enter in n_distinct(astronauts$name) 
+astronauts <- read.csv("astronauts.csv") 
+view(astronauts) 
+names(astronauts) 
+nrow(astronauts)
+n_distinct(astronauts$name) 
 ```
 
 <br>
@@ -57,7 +65,15 @@ a) How many unique astronauts are stored in the data set?
 b) What's the overall share of female astronauts? And what's the share of astronauts with U.S. nationality?
 
 ```{r}
-# YOUR CODE HERE
+# Answer for #b. unique_astronauts <- distinct(astronauts, name, .keep_all = TRUE)
+# mean(unique_astronauts$sex == "female") * 100 = 11.35% are female.
+# some have dual citizenship so I included "U.S." and "U.K./U.S." here is my code unique(unique_astronauts$nationality) mean(unique_astronauts$nationality == "U.S." | unique_astronauts$nationality == "U.K./U.S.") * 100 and I got 61.5% U.S. nationality. 
+unique_astronauts <- distinct(astronauts, name, .keep_all = TRUE)
+mean(unique_astronauts$sex == "female") * 100
+unique(unique_astronauts$nationality) 
+mean(unique_astronauts$nationality == "U.S.") * 100
+mean(grepl("U.S.", unique_astronauts$nationality)) * 100
+mean(unique_astronauts$nationality == "U.S." | unique_astronauts$nationality == "U.K./U.S.") * 100
 ```
 
 <br>
@@ -65,7 +81,10 @@ b) What's the overall share of female astronauts? And what's the share of astron
 c) Create a new data set `total_hours_df` containing the unique names and the total duration of all missions in hours (`total_hrs_sum`) for each astronaut in the data. Then, visualize the distribution of that variable using an appropriate plot type.
 
 ```{r}
-# YOUR CODE HERE
+# Answer for #c, total_hours_df <- astronauts |> group_by(name) |> summarise(total_hrs_sum = sum(hours_mission, na.rm = TRUE)) 
+#checked it with view(total_hours_df) add ggplot for histogram so, ggplot(total_hours_df, aes(x = total_hrs_sum)) + geom_histogram() 
+total_hours_df <- astronauts |> group_by(name) |> summarise(total_hrs_sum = sum(hours_mission, na.rm = TRUE)) 
+ggplot(total_hours_df, aes(x = total_hrs_sum)) + geom_histogram() 
 ```
 
 <br>
@@ -74,6 +93,8 @@ d) Provide a plot that shows the overall share of *civilian* astronauts by the y
 
 ```{r}
 # YOUR CODE HERE
+civilian_share <- astronauts |> group_by(year_of_mission) |> summarise(share_civilian = mean(military_civilian == "civilian") * 100) 
+ggplot(civilian_share, aes(x = year_of_mission, y = share_civilian)) + geom_line() 
 ```
 
 
@@ -87,7 +108,11 @@ d) Provide a plot that shows the overall share of *civilian* astronauts by the y
 a) Given a vector of birthdates, write a function that computes the vector of corresponding ages in years.
 
 ```{r}
-# YOUR CODE HERE
+# Answer#a I will choose c(1988,1989,1990,1991,1992) as my vector 
+# gonna call it age_years and make the function be birth_year - 2026
+c(1988,1989,1990,1991,1992) 
+age_years <- function(birth_year) {2026 - birth_year} 
+age_years(c(1988, 1989, 1991, 1992)) 
 ```
 
 <br>
@@ -96,6 +121,14 @@ b) Write `both_na()`, a summary function that takes two vectors of the same leng
 
 ```{r}
 # YOUR CODE HERE
+#okay so our two vectors are 
+#    a <- c(1, NA, 2, NA) 
+#AND b <- c(3, NA, NA, 4) 
+#position 1-has numbers not both NA, position 2 is YES has both NA, position 3 is NO has mix, position 4 NO is mix as well
+both_na <- function(x, y) {sum(is.na(x) & is.na(y))} 
+a <- c(1, NA, 2, NA) 
+b <- c(3, NA, NA, 4) 
+both_na(a, b) 
 ```
 
 <br>
@@ -112,6 +145,15 @@ Write the function and test it with at least **five different passwords** that t
 
 ```{r}
 # YOUR CODE HERE
+#okay so we are creating passwords and seeing if they pass the mark according to each function(?) 
+# create at least 5 that match the req. for each function
+check_password <- function(pw) ifelse(str_detect(str_to_lower(pw), "password"), "Terrible!", ifelse(str_length(pw) <6, "Too weak", ifelse(str_detect(pw, "^[A-Za-z]+$"), "Meh", ifelse(str_detect(pw, "[A-Za-z]") & str_detect(pw, "[0-9]"), "Not bad", ifelse(str_detect(pw, "[A-Za-z]") & str_detect(pw, "[0-9]") & str_detect(pw, "[!@#$%^&*?]"), "Strong", NA))))) 
+check_password("Password123") 
+check_password("abc") 
+check_password("abcdef") 
+check_password("abc123") 
+check_password("Abcd123#%#4ABC") 
+#i give up on the last one, whyyyyyy :*( LOL. 
 ```
 
 
