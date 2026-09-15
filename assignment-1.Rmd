@@ -1,0 +1,156 @@
+---
+title: "Assignment 1 - Data wrangling and functions"
+author: "SAMUEL GARCIA"
+date: "`r format(Sys.time(), '%B %d, %Y | %H:%M:%S | %Z')`"
+output:
+  html_document:
+    code_folding: show
+    df_print: paged
+    highlight: tango
+    number_sections: no
+    theme: cosmo
+    toc: no
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      error = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      comment = NA)
+```
+
+***
+
+
+```{r, include = T}
+# LOAD THE PACKAGES YOU ARE USING IN THIS CODE CHUNK
+# library(nameofpackage)
+```
+
+
+<br>
+
+## Task 1: Getting started with the Astronaut Database
+
+The data this week comes from [Mariya Stavnichuk and Tatsuya Corlett](https://data.mendeley.com/datasets/86tsnnbv2w/1). 
+
+This [article](https://www.sciencedirect.com/science/article/abs/pii/S2214552420300444) talks about the data set in greater detail.
+
+> This database contains publically available information about all astronauts who participated in space missions before 15 January 2020 collected from NASA, Roscosmos, and fun-made websites. The provided information includes full astronaut name, sex, date of birth, nationality, military status, a title and year of a selection program, and information about each mission completed by a particular astronaut such as a year, ascend and descend shuttle names, mission and extravehicular activity (EVAs) durations.
+
+You can use the data set directly by importing the csv file in the repository.
+
+<br>
+
+***
+
+a) How many unique astronauts are stored in the data set?
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+b) What's the overall share of female astronauts? And what's the share of astronauts with U.S. nationality?
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+c) Create a new data set `total_hours_df` containing the unique names and the total duration of all missions in hours (`total_hrs_sum`) for each astronaut in the data. Then, visualize the distribution of that variable using an appropriate plot type.
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+d) Provide a plot that shows the overall share of *civilian* astronauts by the year of mission!
+
+```{r}
+# YOUR CODE HERE
+```
+
+
+<br>
+
+***
+
+
+### Task 2 – Writing functions
+
+a) Given a vector of birthdates, write a function that computes the vector of corresponding ages in years.
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+b) Write `both_na()`, a summary function that takes two vectors of the same length and returns the number of positions that have an `NA` in both vectors. For example the two vectors `a <- c(1, NA, 2, NA)` and `b <- c(3, NA, NA, 4)` should give 1.
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+c) Program a function `check_password(pw)` that takes a password string `pw` and returns a funny *strength rating* according to the following rules:  
+
+1. If the password contains the word `"password"` (in any mix of upper/lower case), return `"Terrible!"`.
+2. If the password is shorter than 6 characters, return `"Too weak"`.  
+3. If it contains only letters, return `"Meh"`.  
+4. If it contains letters **and** numbers, return `"Not bad"`.  
+5. If it contains letters **and** numbers **and** at least one special character from `!@#$%^&*?`, return `"Strong"`.  
+
+Write the function and test it with at least **five different passwords** that trigger different outputs. Also, use functions from the `stringr` package to execute the checks in your function (hint: look up `str_detect()` and `str_length()`).
+
+```{r}
+# YOUR CODE HERE
+```
+
+
+
+<br>
+
+***
+
+### Bonus challenge - The Monty Hall Machine
+
+**Note: This task is optional and not required for the assignment.**
+
+a) Write an R function that simulates the [Monty Hall problem](https://en.wikipedia.org/wiki/Monty_Hall_problem). Start with writing a function called `monty_hall_choice()` that: 
+- Simulates a single round of the Monty Hall problem.
+- Has an argument `switch` that controls whether the contestant switches doors after Monty reveals a goat.
+- Returns `TRUE` if the contestant wins the car, and `FALSE` if they do not.
+Test it by running it 10 times each with `switch = TRUE` and `switch = FALSE`, and summarize the results. *HINT: Consider loops*.
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+b) Now, create a function `monty_hall_simulation()` to simulate multiple rounds of the Monty Hall problem:
+- The function should wrap around the `monty_hall_choice()`.
+- Add an argument `n` to the function that specifies how many rounds to simulate.
+- The function should return the proportion of times the contestant wins the car for both strategies (`switch = TRUE` and `switch = FALSE`).
+
+```{r}
+# YOUR CODE HERE
+```
+
+<br>
+
+c) Generalize the Monty Hall Problem to $k$ doors and $k-1$ goats, where the host will open all doors except for 2. Now, visualize the probability of winning (proportion of wins) for both strategies (switch and stay) as a function of the number of simulated rounds n and the number of doors $k$, for a set of values for both $n$ and $k$ that you choose. *Important:* This is just for fun. You don't have to work on this task if you don't have time. Providing a right/wrong solution does not give/cost you extra points. (A right solution gives you kudos from the instructor though!)
+
+```{r}
+# YOUR CODE HERE
+```
+
+
